@@ -14,6 +14,13 @@ class Model:
 
 		pass
 
+	def make_move(board):
+		"""
+		Will decide where to move based upon the target function.
+		"""
+
+		pass
+
 class Board:
 
 	def __init__(self):
@@ -35,7 +42,7 @@ class GamePlayer:
 
 		# Set up the game
 		board = blank_board()
-		batch = set()
+		batch = set()					# will be used for training
 		learner_won = None
 
 		# Perform until the game finishes
@@ -43,7 +50,7 @@ class GamePlayer:
 
 			# Move the learning model
 			board_previous = board
-			board = self.model_learner.make_move(board)
+			board = self.model_learner.make_move(board_previous)
 
 			# Add the learning model's data to the batch
 			training_example = (board_previous, board.target_function())
@@ -63,7 +70,7 @@ class GamePlayer:
 				break
 
 		# Adjust the learning model's parameter's
-		self.model_learner.gradient_descent(batch)
+		self.model_learner.gradient_decent(batch)
 
 		return learner_won
 
@@ -96,5 +103,3 @@ def main():
 				break
 			# No need to maintain this data structure
 			proportions = []
-
-def make_move
