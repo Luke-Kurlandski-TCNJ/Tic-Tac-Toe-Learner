@@ -29,6 +29,27 @@ class Board:
 			True : indicates the game is over and has ended in a draw
 			'X' : indicates the 'X' player has won
 			'O' : indicates the 'O' player has won
+		
+		row  = 3
+		column = 3
+		
+		Fill_Counter = 0;
+		
+		for i in range(row):
+			for j in range(column):
+				if self.board[i][j] != "None":
+					Fill_Counter += 1
+				if Right_Check(insert parameters) == True || Down_Check(param) == True || Diagonal_Right(param) == True || Diagonal_Left(param) == True:
+					if Check_Symbol == 'X':
+						return 'X';
+					
+					if(Check_Symbol == 'O':
+						return 'O';
+				
+			if Fill_Counter == 9:
+				return True
+		
+		return False
 		"""
 
 		return None
