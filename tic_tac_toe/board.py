@@ -5,6 +5,9 @@ The board which tac tac toe is played upon.
 import pprint
 
 class Board:
+	"""
+	The board which tac tac toe is played upon.
+	"""
 
 	def __init__(self):
 		"""
@@ -16,6 +19,19 @@ class Board:
 						[None, None, None],
 						[None, None, None]
 		]
+
+	def game_over(self):
+		"""
+		Determine whether or not the game is over.
+
+		Returns:
+			False : indicates the game is not over
+			True : indicates the game is over and has ended in a draw
+			'X' : indicates the 'X' player has won
+			'O' : indicates the 'O' player has won
+		"""
+
+		return None
 
 	def target_representation(self, weights, positive_board_piece):
 		"""

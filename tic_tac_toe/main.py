@@ -1,5 +1,5 @@
 """
-
+The program that runs the tic taco toe learning procedure.
 """
 
 def main():
@@ -31,6 +31,9 @@ def main():
 				break
 			# No need to maintain this data structure
 			proportions = []
+
+def test():
+	pass
 
 if __name__ == "__main__":
 	main()
