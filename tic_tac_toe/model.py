@@ -39,8 +39,11 @@ class Model:
 		"""
 		Return the value of a board according to target representation.
 
-		Argumentes:
+		Arguments:
 			board : the board to compute a score for
+
+		Returns:
+			value : the value for the board
 		"""
 
 		x = board.target_representation()
