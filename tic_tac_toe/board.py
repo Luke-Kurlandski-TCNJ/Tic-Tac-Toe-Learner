@@ -29,19 +29,20 @@ class Board:
 			True : indicates the game is over and has ended in a draw
 			'X' : indicates the 'X' player has won
 			'O' : indicates the 'O' player has won
-		
+		"""
+		"""
 		row  = 3
 		column = 3
 		
-		Fill_Counter = 0;
+		Fill_Counter = 0
 		
 		for i in range(row):
 			for j in range(column):
 				if self.board[i][j] != "None":
 					Fill_Counter += 1
-				if Right_Check(insert parameters) == True || Down_Check(param) == True || Diagonal_Right(param) == True || Diagonal_Left(param) == True:
+				if Right_Check(insert parameters) == True or Down_Check(param) == True or Diagonal_Right(param) == True or Diagonal_Left(param) == True:
 					if Check_Symbol == 'X':
-						return 'X';
+						return 'X'
 					
 					if(Check_Symbol == 'O':
 						return 'O';
@@ -51,12 +52,19 @@ class Board:
 		
 		return False
 		"""
+		pass
 
-		return None
-
-	def target_representation(self, weights, positive_board_piece):
+	@staticmethod
+	def number_of_features():
 		"""
-		Return a board value according to the representation, V-hat.
+		Return the number of features in the target representation.
+		"""
+
+		return 10
+
+	def target_representation(self, positive_board_piece):
+		"""
+		Return the features, x_0, x_1,...x_10 for the current board.
 
 		Notes: the representation assigns a numerical value to each of
 			the nine squares. The value is x_i = 1 if the player has a
@@ -67,7 +75,6 @@ class Board:
 			right.
 
 		Arguments:
-			weights : the learned numerical weights
 			positive_board_piece : the piece that a player moves with,
 				either 'X', or 'O'
 
@@ -75,7 +82,8 @@ class Board:
 			the value of the board, according to the weights
 		"""
 
-		x = [1]
+		x = [None for i in range(self.number_of_features())]
+		x[0] = 1
 		for row in self.board:
 			for square in row:
 				if square is None:
@@ -85,7 +93,7 @@ class Board:
 				else:
 					x.append(-1)
 
-		return sum([weights[i] * x[i] for i in range(len(x))])
+		return x
 
 def tests():
 
