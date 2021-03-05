@@ -36,16 +36,16 @@ class Board:
 		
 		Fill_Counter = 0
 		
-		for i in range(row):
-			for j in range(column):
-				if self.board[i][j] != "None":
+		for x in range(row):
+			for y in range(column):
+				if self.board[x][y] != "None":
 					Fill_Counter += 1
 				if Right_Check(insert parameters) == True or Down_Check(param) == True or Diagonal_Right(param) == True or Diagonal_Left(param) == True:
 					if Check_Symbol == 'X':
 						return 'X'
 					
 					if(Check_Symbol == 'O':
-						return 'O';
+						return 'O'
 				
 			if Fill_Counter == 9:
 				return True
@@ -53,6 +53,55 @@ class Board:
 		return False
 		"""
 		pass
+	
+	def Right_Check(self, x, y, row, col):
+		for i in range(3):
+			if x < 0 or x > row or y < 0 or y + i >= col:	
+				return False;
+			if self.board[x][y + i] != 'X' and self.board[x][y + i] != 'O':
+				return False
+			if self.board[x][y + i] == 'X':
+				return 'X'
+			if self.board[x][y + i] == 'O':
+				return 'O'
+		 return None
+	
+	def Down_Check(self, x, y, row, col):
+		for i in range(3):
+			if x + i < 0 or x + i >= row or y < 0 or y > col:	
+				return False;
+			if self.board[x + i][y] != 'X' and self.board[x][y + i] != 'O':
+			if self.board[x + i][y] == 'X':
+				return 'X'
+			if self.board[x + i][y] == 'O':
+				return 'O'
+			
+		 return None
+	
+	def Diagonal_Left(self, x, y, row, col):
+		for i in range(3):
+			if x + i < 0 or x + i >= row or y - i < 0 or y - i >= col:	
+				return False;
+			if self.board[x + i][y - i] != 'X' and self.board[x + i][y - i] != 'O':
+				if self.board[x + i][y - i] == 'X': 
+					return 'X'
+				if self.board[x + i][y - i] == 'O':
+					return 'O'
+		 return None
+	
+	def Diagonal_Right(self, x, y, row, col):
+		for i in range(3):
+			if x + i < 0 or x + i >= row or y + i < 0 or y + i >= col:	
+				return False;
+			if self.board[x + i][y + i] != 'X' and self.board[x + i][y + i] != 'O':
+			if self.board[x + i][y + i] == 'X': 
+				return 'X'
+			if self.board[x + i][y + i] == 'O':
+				return 'O'
+		 return None
+		
+	
+		
 
 	@staticmethod
 	def number_of_features():
