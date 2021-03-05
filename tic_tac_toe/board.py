@@ -82,8 +82,8 @@ class Board:
 			the value of the board, according to the weights
 		"""
 
-		x = [None for i in range(self.number_of_features())]
-		x[0] = 1
+		x = []
+		x.append(1)
 		for row in self.board:
 			for square in row:
 				if square is None:
