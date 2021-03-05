@@ -50,11 +50,25 @@ class Model:
 		value = sum([self.weights[i] * x[i] for i in range(len(x))])
 		return value
 	
-	def gradient_descent(self, batch):
+	def gradient_descent(self, batch, n = .1):
 		"""
 		Algorithm Bloodgood described in class to adjust model's params.
-		"""
 
+		batch - Set of states and score
+		"""
+		# iterate through batch
+		for i in batch:
+			board_state = i[0]
+			score = i[1]
+			x = board_state.target_representation() # List of representation values
+
+			# Compute approximation
+			approximation = self.target_function(board_state)
+
+			# iterate through weights and rep values
+			for weight, rep_value in zip(self.weights, x):
+
+				weight = weight + n * (score - approximation) * rep_value
 		pass
 
 	def make_move(board):
