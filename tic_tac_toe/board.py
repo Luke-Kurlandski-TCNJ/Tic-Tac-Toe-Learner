@@ -79,7 +79,7 @@ class Board:
 				either 'X', or 'O'
 
 		Returns:
-			the value of the board, according to the weights
+			list of feature values
 		"""
 
 		x = [None for i in range(self.number_of_features())]
