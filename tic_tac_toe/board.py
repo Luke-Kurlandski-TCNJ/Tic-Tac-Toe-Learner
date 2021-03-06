@@ -30,7 +30,10 @@ class Board:
 			'X' : indicates the 'X' player has won
 			'O' : indicates the 'O' player has won
 		"""
-		"""
+	
+		row  = 3
+		column = 3
+		
 		row  = 3
 		column = 3
 		
@@ -40,65 +43,71 @@ class Board:
 			for y in range(column):
 				if self.board[x][y] != "None":
 					Fill_Counter += 1
-				if Right_Check(insert parameters) == True or Down_Check(param) == True or Diagonal_Right(param) == True or Diagonal_Left(param) == True:
-					if Check_Symbol == 'X':
-						return 'X'
-					
-					if(Check_Symbol == 'O':
-						return 'O'
+				if self.Right_Check(x, y, row, column) == 'X' or self.Down_Check(x, y, row, column) == 'X' or self.Diagonal_Right(x, y, row, column) == 'X' or self.Diagonal_Left(x, y, row, column) == 'X':
+					return 'X'
+				if self.Right_Check(x, y, row, column) == 'O' or self.Down_Check(x, y, row, column) == 'O' or self.Diagonal_Right(x, y, row, column) == 'O' or self.Diagonal_Left(x, y, row, column) == 'O':	
+					return 'O'
 				
 			if Fill_Counter == 9:
 				return True
 		
 		return False
-		"""
-		pass
+		
+		#pass
 	
 	def Right_Check(self, x, y, row, col):
 		for i in range(3):
+			print(i)
 			if x < 0 or x > row or y < 0 or y + i >= col:	
-				return False;
+				return False
 			if self.board[x][y + i] != 'X' and self.board[x][y + i] != 'O':
 				return False
-			if self.board[x][y + i] == 'X':
+			if self.board[x][y + i] == 'X' and i == 2:
 				return 'X'
-			if self.board[x][y + i] == 'O':
+			if self.board[x][y + i] == 'O' and i == 2:
+				#print(i)
 				return 'O'
-		 return None
+		return None
 	
 	def Down_Check(self, x, y, row, col):
 		for i in range(3):
-			if x + i < 0 or x + i >= row or y < 0 or y > col:	
-				return False;
+			print(i)
+			if x + i < 0 or x + i > row or y < 0 or y > col:	
+				return False
 			if self.board[x + i][y] != 'X' and self.board[x][y + i] != 'O':
-			if self.board[x + i][y] == 'X':
+				return False
+			if self.board[x + i][y] == 'X' and i == 2:
 				return 'X'
-			if self.board[x + i][y] == 'O':
+			if self.board[x + i][y] == 'O' and i == 3:
 				return 'O'
 			
-		 return None
+		return None
 	
 	def Diagonal_Left(self, x, y, row, col):
 		for i in range(3):
+			print(i)
 			if x + i < 0 or x + i >= row or y - i < 0 or y - i >= col:	
-				return False;
+				return False
 			if self.board[x + i][y - i] != 'X' and self.board[x + i][y - i] != 'O':
-				if self.board[x + i][y - i] == 'X': 
+				return False
+			if self.board[x + i][y - i] == 'X' and i == 2: 
 					return 'X'
-				if self.board[x + i][y - i] == 'O':
+			if self.board[x + i][y - i] == 'O' and i == 2:
 					return 'O'
-		 return None
+		return None
 	
 	def Diagonal_Right(self, x, y, row, col):
 		for i in range(3):
+			print(i)
 			if x + i < 0 or x + i >= row or y + i < 0 or y + i >= col:	
-				return False;
+				return False
 			if self.board[x + i][y + i] != 'X' and self.board[x + i][y + i] != 'O':
-			if self.board[x + i][y + i] == 'X': 
+				return False
+			if self.board[x + i][y + i] == 'X' and i == 2: 
 				return 'X'
-			if self.board[x + i][y + i] == 'O':
+			if self.board[x + i][y + i] == 'O' and i == 2:
 				return 'O'
-		 return None
+		return None
 		
 	
 		
