@@ -4,6 +4,9 @@ The board which tac tac toe is played upon.
 
 import pprint
 
+# Number of features in target representation.
+NUM_FEATURES = 10
+
 class Board:
 	"""
 	The board which tac tac toe is played upon.
@@ -30,37 +33,97 @@ class Board:
 			'X' : indicates the 'X' player has won
 			'O' : indicates the 'O' player has won
 		"""
-		"""
+
+			
+
 		row  = 3
 		column = 3
 		
 		Fill_Counter = 0
 		
-		for i in range(row):
-			for j in range(column):
-				if self.board[i][j] != "None":
+		for x in range(row):
+			for y in range(column):
+				if self.board[x][y] != None:
 					Fill_Counter += 1
-				if Right_Check(insert parameters) == True or Down_Check(param) == True or Diagonal_Right(param) == True or Diagonal_Left(param) == True:
-					if Check_Symbol == 'X':
-						return 'X'
-					
-					if(Check_Symbol == 'O':
-						return 'O';
-				
+				if self.Right_Check(x) == 'X' or self.Down_Check(y) == 'X' or self.Diagonal_Left(x, y) == 'X' or self.Diagonal_Right(x,y) == 'X':
+					return 'X'
+				if self.Right_Check(x) == 'O' or self.Down_Check(y) == 'O' or self.Diagonal_Left(1, 3) == 'O' or self.Diagonal_Right(x,y) == 'O':
+					return 'O'
 			if Fill_Counter == 9:
 				return True
-		
 		return False
-		"""
-		pass
+		
+		
+		#pass
+	
+	def Right_Check(self, x):
+		x_count = 0
+		o_count = 0
+		for i in range(3):
+			if self.board[x][i] == 'X':
+				x_count += 1
+				if x_count == 3:
+					return 'X'
+			if self.board[x][i] == 'O':
+				o_count += 1
+				if o_count == 3:
+					return 'O'
+		return False
+	
+	def Down_Check(self, y):
+		x_count = 0
+		o_count = 0
+		for i in range(3):
+			if self.board[i][y] == 'X':
+				x_count += 1
+				if x_count == 3:
+					return 'X'
+			if self.board[i][y] == 'O':
+				o_count += 1
+				if o_count == 3:
+					return 'O'
+		return False
 
+	def Diagonal_Left(self, x, y):
+		x_count = 0
+		o_count = 0
+		for i in range(3):
+			if self.board[i][3 - 1 - i] == 'X':
+				x_count += 1
+				if x_count == 3:
+					return 'X'
+			if self.board[i][3 - 1 - i] == 'O':
+				o_count += 1
+				if o_count == 3:
+					return 'O'
+						
+		return False
+	
+	def Diagonal_Right(self, x, y):
+		x_count = 0
+		o_count = 0
+		for i in range(3):
+			if self.board[i][i] == 'X':
+				x_count += 1
+				if x_count == 3:
+					return 'X'
+			if self.board[i][i] == 'O':
+				o_count += 1
+				if o_count == 3:
+					return 'O'
+		return False
+		
+		
+
+
+		
 	@staticmethod
 	def number_of_features():
 		"""
 		Return the number of features in the target representation.
 		"""
 
-		return 10
+		return NUM_FEATURES
 
 	def target_representation(self, positive_board_piece):
 		"""
@@ -79,11 +142,11 @@ class Board:
 				either 'X', or 'O'
 
 		Returns:
-			the value of the board, according to the weights
+			list of feature values
 		"""
 
-		x = [None for i in range(self.number_of_features())]
-		x[0] = 1
+		x = []
+		x.append(1)
 		for row in self.board:
 			for square in row:
 				if square is None:
@@ -95,33 +158,9 @@ class Board:
 
 		return x
 
-def tests():
 
-	board = Board()
-
-	weights = [0, 1, 1, 1, 1, 10, 1, 1, 1, 1]
-	board.board = [
-		['X', 'X', 'O'],
-		['X', 'O', None],
-		[None, None, None]
-	]
-	print("Should value the middle piece highly: ")
-	print("Board: ")
-	pprint.pprint(board.board)
-	print("'X' score:", board.target_representation(weights, 'X'))
-	print("'O' score:", board.target_representation(weights, 'O'))
-
-	weights = [0, 10, 1, 10, 1, 1, 1, 10, 1, 10]
-	board.board = [
-		['X', 'O', 'X'],
-		['O', 'O', None],
-		[None, None, None]
-	]
-	print("Should value the corner pieces highly: ")
-	print("Board: ")
-	pprint.pprint(board.board)
-	print("'X' score:", board.target_representation(weights, 'X'))
-	print("'O' score:", board.target_representation(weights, 'O'))
-
+def main():
+  pass
 if __name__ == "__main__":
-	tests()
+	main()
+  
