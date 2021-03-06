@@ -34,33 +34,88 @@ class Board:
 			'O' : indicates the 'O' player has won
 		"""
 
-		# Check rows.
-		for row in self.board:
-			s1, s2, s3 = row[0], row[1], row[2]
-			if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
-				return s1
+			
+
+		row  = 3
+		column = 3
 		
-		# Check columns.
-		board_transposed = map(list, zip(*self.board))
-		for row in board_transposed:
-			s1, s2, s3 = row[0], row[1], row[2]
-			if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
-				return s1
+		Fill_Counter = 0
+		
+		for x in range(row):
+			for y in range(column):
+				if self.board[x][y] != None:
+					Fill_Counter += 1
+				if self.Right_Check(x) == 'X' or self.Down_Check(y) == 'X' or self.Diagonal_Left(x, y) == 'X' or self.Diagonal_Right(x,y) == 'X':
+					return 'X'
+				if self.Right_Check(x) == 'O' or self.Down_Check(y) == 'O' or self.Diagonal_Left(1, 3) == 'O' or self.Diagonal_Right(x,y) == 'O':
+					return 'O'
+			if Fill_Counter == 9:
+				return True
+		return False
+		
+		
+		#pass
+	
+	def Right_Check(self, x):
+		x_count = 0
+		o_count = 0
+		for i in range(3):
+			if self.board[x][i] == 'X':
+				x_count += 1
+				if x_count == 3:
+					return 'X'
+			if self.board[x][i] == 'O':
+				o_count += 1
+				if o_count == 3:
+					return 'O'
+		return False
+	
+	def Down_Check(self, y):
+		x_count = 0
+		o_count = 0
+		for i in range(3):
+			if self.board[i][y] == 'X':
+				x_count += 1
+				if x_count == 3:
+					return 'X'
+			if self.board[i][y] == 'O':
+				o_count += 1
+				if o_count == 3:
+					return 'O'
+		return False
 
-		# Check diagonals.
-		s1, s2, s3 = self.board[0][0], self.board[1][1], self.board[2][2]
-		if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
-			return s1
-		s1, s2, s3 = self.board[0][2], self.board[1][1], self.board[2][0]
-		if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
-			return s1
+	def Diagonal_Left(self, x, y):
+		x_count = 0
+		o_count = 0
+		for i in range(3):
+			if self.board[i][3 - 1 - i] == 'X':
+				x_count += 1
+				if x_count == 3:
+					return 'X'
+			if self.board[i][3 - 1 - i] == 'O':
+				o_count += 1
+				if o_count == 3:
+					return 'O'
+						
+		return False
+	
+	def Diagonal_Right(self, x, y):
+		x_count = 0
+		o_count = 0
+		for i in range(3):
+			if self.board[i][i] == 'X':
+				x_count += 1
+				if x_count == 3:
+					return 'X'
+			if self.board[i][i] == 'O':
+				o_count += 1
+				if o_count == 3:
+					return 'O'
+		return False
+		
+		
 
-		# If reached this point, neither player has won.
-		board_flattened = sum(self.board, [])
-		if None in board_flattened:
-			return False
-		else:
-			return True
+
 		
 	@staticmethod
 	def number_of_features():
@@ -103,8 +158,9 @@ class Board:
 
 		return x
 
-def main():
-	pass
 
+def main():
+  pass
 if __name__ == "__main__":
 	main()
+  

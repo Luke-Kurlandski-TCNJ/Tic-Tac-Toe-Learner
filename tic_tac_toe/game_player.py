@@ -96,6 +96,7 @@ class GamePlayer:
 			else:
 				raise ValueError("board.game_over() bad return")
 
+
 		# Perform until the game finishes for static model first move
 		while not learning_model_goes_first and not board.game_over():
 			

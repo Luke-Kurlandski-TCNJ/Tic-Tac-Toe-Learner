@@ -45,6 +45,8 @@ def main():
 		if current_win_loss - previous_win_loss < THRESHOLD:
 			break
 	
+
+
 	with open('records.txt', 'w') as f:
 		f.write("# Wins, # Losses, # Ties")
 		f.write(records) 
