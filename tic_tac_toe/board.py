@@ -43,46 +43,47 @@ class Board:
 			for y in range(column):
 				if self.board[x][y] != "None":
 					Fill_Counter += 1
-				if self.Right_Check(x, y, row, column) == 'X' or self.Down_Check(x, y, row, column) == 'X' or self.Diagonal_Right(x, y, row, column) == 'X' or self.Diagonal_Left(x, y, row, column) == 'X':
+				if self.Right_Check(x) == 'X': # or self.Down_Check(y) == 'X':
 					return 'X'
-				if self.Right_Check(x, y, row, column) == 'O' or self.Down_Check(x, y, row, column) == 'O' or self.Diagonal_Right(x, y, row, column) == 'O' or self.Diagonal_Left(x, y, row, column) == 'O':	
-					return 'O'
 				
 			if Fill_Counter == 9:
 				return True
+			else:
+				return False
 		
-		return False
+		return None
 		
 		#pass
 	
-	def Right_Check(self, x, y, row, col):
+	def Right_Check(self, x):
 		for i in range(3):
-			print(i)
-			if x < 0 or x > row or y < 0 or y + i >= col:	
-				return False
-			if self.board[x][y + i] != 'X' and self.board[x][y + i] != 'O':
-				return False
-			if self.board[x][y + i] == 'X' and i == 2:
-				return 'X'
-			if self.board[x][y + i] == 'O' and i == 2:
-				#print(i)
-				return 'O'
-		return None
-	
-	def Down_Check(self, x, y, row, col):
-		for i in range(3):
-			print(i)
-			if x + i < 0 or x + i > row or y < 0 or y > col:	
-				return False
-			if self.board[x + i][y] != 'X' and self.board[x][y + i] != 'O':
-				return False
-			if self.board[x + i][y] == 'X' and i == 2:
-				return 'X'
-			if self.board[x + i][y] == 'O' and i == 3:
-				return 'O'
+			x_count = 0
+			o_count = 0
 			
+			if self.board[x][i] == 'X':
+				x_count += 1
+				if x_count == 3:
+					return 'X'
+			if self.board[x][i] == 'O':
+				o_count += 1
+				if o_count == 3:
+					return 'O'
 		return None
 	
+	def Down_Check(self, y):
+		for i in range(3):
+			x_count = 0
+			o_count = 0
+			if self.board[i][y] == 'X':
+				x_count += 1
+				if x_count == 3:
+					return 'X'
+			if self.board[i][y] == 'O':
+				o_count += 1
+				if o_count == 3:
+					return 'O'
+		return None
+	'''
 	def Diagonal_Left(self, x, y, row, col):
 		for i in range(3):
 			print(i)
@@ -109,7 +110,7 @@ class Board:
 				return 'O'
 		return None
 		
-	
+	'''
 		
 
 	@staticmethod
@@ -159,13 +160,14 @@ def tests():
 
 	weights = [0, 1, 1, 1, 1, 10, 1, 1, 1, 1]
 	board.board = [
-		['X', 'X', 'O'],
+		['X', 'X', 'X'],
 		['X', 'O', None],
 		[None, None, None]
 	]
 	print("Should value the middle piece highly: ")
 	print("Board: ")
 	pprint.pprint(board.board)
+	print(board.game_over())
 	print("'X' score:", board.target_representation(weights, 'X'))
 	print("'O' score:", board.target_representation(weights, 'O'))
 
