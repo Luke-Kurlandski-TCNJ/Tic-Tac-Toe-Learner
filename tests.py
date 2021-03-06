@@ -1,11 +1,34 @@
 """
 Test all aspects of the application.
+
+Run from command line using 
+	> cd Tic-Tac-Toe-Learner
+	> python tests.py
 """
 
+import random
 import pprint
 import unittest
+import sys
 
 from tic_tac_toe.board import Board
+from tic_tac_toe.model import Model
+from tic_tac_toe.game_player import GamePlayer
+from tic_tac_toe.main import main
+
+def generate_random_board():
+
+	def X_or_O():
+		return random.choice(['X', 'O'])
+
+	board = Board()
+	board.board = [
+		[X_or_O(), X_or_O(), X_or_O()],
+		[X_or_O(), X_or_O(), X_or_O()],
+		[X_or_O(), X_or_O(), X_or_O()]
+	]
+
+	return board
 
 class BoardTest(unittest.TestCase):
 	def test_target_representation(self):	
@@ -31,8 +54,8 @@ class BoardTest(unittest.TestCase):
 		board = Board()
 		board.board = [
 			['X', 'X', 'O'],
-			['X', 'O', None],
-			[None, None, None]
+			['X', None, 'X'],
+			['O', 'X', 'O']
 		]
 		assert board.game_over() is False
 
@@ -46,8 +69,8 @@ class BoardTest(unittest.TestCase):
 		]
 		assert board.game_over() is True
 
-	def test_game_over_X_wins(self):
-		
+	def test_game_over_by_row(self):
+
 		board = Board()
 		board.board = [
 			['X', 'X', 'X'],
@@ -56,15 +79,139 @@ class BoardTest(unittest.TestCase):
 		]
 		assert board.game_over() == 'X'
 
-	def test_game_over_O_wins(self):
+	def test_game_over_by_col(self):
+
+		board = Board()
+		board.board = [
+			['O', 'X', 'O'],
+			['X', 'X', 'O'],
+			['O', 'X', 'X']
+		]
+		assert board.game_over() == 'X'
+
+	def test_game_over_by_diagonal(self):
 		
+		board = Board()
+		board.board = [
+			['O', 'O', 'X'],
+			['X', 'X', 'O'],
+			['X', 'O', 'X']
+		]
+		assert board.game_over() == 'X'
+
+class ModelTest(unittest.TestCase):
+
+	def test___init__(self):
+
+		model = Model('X')
+		assert model.piece == 'X'
+
+		model = Model('O')
+		assert model.piece == 'O'
+
+	def test_initialize_random_weights(self):
+
+		model = Model('X')
+		model.initialize_random_weights()
+
+		assert len(model.weights) == Board.number_of_features()
+
+	def test_initialize_optimal_weights(self):
+
+		model = Model('X')
+		model.initialize_optimal_weights()
+
+		assert len(model.weights) == Board.number_of_features()
+
+	def test_target_function(self):
+
 		board = Board()
 		board.board = [
 			['X', 'X', 'O'],
 			['O', 'O', 'O'],
 			['X', 'O', 'X']
 		]
-		assert board.game_over() == 'O'
+
+		model = Model('X')
+
+		prediction = model.target_function(board)
+		assert isinstance(prediction, float)
+
+		prediction = model.target_function(board)
+		assert isinstance(prediction, float)
+
+	def test_gradient_descent(self):
+
+		model = Model('X')
+
+		batch_size = 10
+
+		boards = [generate_random_board() for i in range(batch_size)]
+
+		batch = {
+			(board, model.target_function(board)) for board in boards
+		}
+
+		board_to_win = Board()
+		board_to_win.board = [
+			['O', 'X', 'O'],
+			['O', 'X', 'O'],
+			['X', None, 'X']
+		]
+		board_to_lose = Board()
+		board_to_win.board = [
+			['O', 'X', 'O'],
+			['O', 'X', 'X'],
+			[None, 'O', 'X']
+		]
+
+		batch.add((board_to_win, 1))
+		batch.add((board_to_win, -1))
+
+		old_weights = [w for w in model.weights]
+
+		model.gradient_descent(batch)
+
+		same = [old == new for old, new in zip(old_weights, model.weights)]
+
+		if all(same):
+			assert False
+		else:
+			assert True
+
+	def test_make_move(self):
+
+		board = Board()
+		board.board = [
+			['X', 'X', 'O'],
+			['O', 'O', 'O'],
+			['X', 'O', 'X']
+		]
+
+		model = Model('X')
+		assert isinstance(model.make_move(board), Board)
+
+class GamePlayerTest(unittest.TestCase):
+
+	def test___init__(self):
+		
+		g = GamePlayer(Model('X'), Model('O'))
+
+		assert isinstance(g.model_learner, Model)
+		assert isinstance(g.model_static, Model)
+
+	def test_play_game(self):
+		
+		g = GamePlayer(Model('X'), Model('O'))
+
+		# FIXME: once make_move is implemented, we can test this.
+		assert False
+		#assert isinstance(g.play_game(), bool)
+
+class mainTest(unittest.TestCase):
+
+	def test_main(self):
+		main()
 
 if __name__ == '__main__':
 	unittest.main()
