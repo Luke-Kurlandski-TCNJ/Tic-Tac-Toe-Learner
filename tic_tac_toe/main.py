@@ -46,7 +46,8 @@ def main():
 			break
 	
 	with open('records.txt', 'w') as f:
-		f.write(records)
+		f.write("# Wins, # Losses, # Ties")
+		f.write(records) 
 
 if __name__ == "__main__":
 	main()
