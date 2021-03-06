@@ -78,19 +78,44 @@ class Model:
 			for i in range(len(self.weights)):
 				self.weights[i] = self.weights[i] + n * (score - approximation) * x[i]
 
-	def make_move(self, board):
+	def make_move(self,board):
 		"""
 		Will decide where to move based upon the target function.
 
-		Returns:
-			board : returns a new Board object
+		Possibly use minimax algorithm.
+
+		Major Issue: If player is worse if they make a move, this algo will fail 
+
+		Originally make multiple deep copies and then evaluate and then set board = deep copy but this didnt seem right 
 		"""
 
-		# FIXME: implement
-		return Board()
+		scores_list= []
 
-def main():
-	pass
+		#iterate through board and find scores of each possible move
+		for i in rows: 
+			for j in columns: 
+				if board.board[i][j] is not None:
+					#fill spot if available 
+					board.board[i][j] = 'X'
+					val = target_function(board)
+					# list of scores based on each move 
+					scores_list.append(val)
+					board.board[i][j] = None
+				else: 
+					val = target_function(board)
+					scores_list.append(val)
 
-if __name__ == "__main__":
-	main()
+		#Find Board with max value
+		max_score = max(scores_list)
+		best_choice = scores_list.index(max_score)
+
+		#in place of making multiple deep copies just find list score with max value
+		row_index = best_choice/3
+		col_index = best_choice%3
+
+		#returns board index with X for best move
+		board.board[row_index][col_index] = 'X'
+
+		return board 
+
+
