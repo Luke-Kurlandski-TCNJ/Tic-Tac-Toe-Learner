@@ -33,11 +33,9 @@ class Board:
 			'X' : indicates the 'X' player has won
 			'O' : indicates the 'O' player has won
 		"""
-<<<<<<< HEAD
-	
-		row  = 3
-		column = 3
-		
+
+			
+
 		row  = 3
 		column = 3
 		
@@ -117,36 +115,7 @@ class Board:
 		
 		
 
-=======
 
-		# Check rows.
-		for row in self.board:
-			s1, s2, s3 = row[0], row[1], row[2]
-			if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
-				return s1
-		
-		# Check columns.
-		board_transposed = map(list, zip(*self.board))
-		for row in board_transposed:
-			s1, s2, s3 = row[0], row[1], row[2]
-			if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
-				return s1
-
-		# Check diagonals.
-		s1, s2, s3 = self.board[0][0], self.board[1][1], self.board[2][2]
-		if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
-			return s1
-		s1, s2, s3 = self.board[0][2], self.board[1][1], self.board[2][0]
-		if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
-			return s1
-
-		# If reached this point, neither player has won.
-		board_flattened = sum(self.board, [])
-		if None in board_flattened:
-			return False
-		else:
-			return True
->>>>>>> 9f8cc19ffc28e69411953648ac6ee4de9bbc6d87
 		
 	@staticmethod
 	def number_of_features():
@@ -189,40 +158,9 @@ class Board:
 
 		return x
 
-<<<<<<< HEAD
-def tests():
 
-	board = Board()
-
-	weights = [0, 1, 1, 1, 1, 10, 1, 1, 1, 1]
-	board.board = [
-		['X', 'X', 'O'],
-		['X', 'O', None],
-		[None, None, 'X']
-	]
-	print("Should value the middle piece highly: ")
-	print("Board: ")
-	pprint.pprint(board.board)
-	print(board.game_over())
-	#print("'X' score:", board.target_representation(weights, 'X'))
-	#print("'O' score:", board.target_representation(weights, 'O'))
-
-	weights = [0, 10, 1, 10, 1, 1, 1, 10, 1, 10]
-	board.board = [
-		['X', 'X', 'O'],
-		['O', 'O', 'X'],
-		['X', 'O', 'O']
-	]
-	print("Should value the corner pieces highly: ")
-	print("Board: ")
-	pprint.pprint(board.board)
-	print(board.game_over())
-	#print("'X' score:", board.target_representation(weights, 'X'))
-	#print("'O' score:", board.target_representation(weights, 'O'))
-=======
 def main():
-	pass
->>>>>>> 9f8cc19ffc28e69411953648ac6ee4de9bbc6d87
-
+  pass
 if __name__ == "__main__":
 	main()
+  

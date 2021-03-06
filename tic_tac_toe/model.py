@@ -3,7 +3,7 @@ ML Model that plays tic tac toe.
 """
 
 from copy import deepcopy
-import numpy as np
+
 import random
 
 from tic_tac_toe.board import Board
@@ -29,9 +29,9 @@ class Model:
 		Initially assign random values to the model's weights.
 		"""
 
-		self.weights = list(
-			np.random.random_sample(size = Board.number_of_features())
-		)
+
+
+		self.weights = [random.random() for i in range(Board.number_of_features())]
 
 	def initialize_optimal_weights(self):
 		"""
