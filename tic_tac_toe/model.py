@@ -2,20 +2,26 @@
 ML Model that plays tic tac toe.
 """
 
+from copy import deepcopy
+import numpy as np
 import random
 
-from board import Board
+from tic_tac_toe.board import Board
 
 class Model:
 	"""
 	ML Model that plays tic tac toe.
 	"""
 
-	def __init__(self):
+	def __init__(self, piece):
 		"""
 		Initialize an unlearned model.
+
+		Arguments:
+			piece : the model's piece, either an 'X' or an 'O'
 		"""
 
+		self.piece = piece
 		self.initialize_random_weights()
 
 	def initialize_random_weights(self):
@@ -23,7 +29,7 @@ class Model:
 		Initially assign random values to the model's weights.
 		"""
 
-		self.weigths = list(
+		self.weights = list(
 			np.random.random_sample(size = Board.number_of_features())
 		)
 
@@ -43,39 +49,41 @@ class Model:
 			board : the board to compute a score for
 
 		Returns:
-			value : the value for the board
+			value : the value for the board state
 		"""
 
-		x = board.target_representation()
+		x = board.target_representation(self.piece)
 		value = sum([self.weights[i] * x[i] for i in range(len(x))])
 		return value
 	
-	def gradient_descent(self, batch, n = .1):
+	def gradient_descent(self, batch, n=.01):
 		"""
-		Algorithm Bloodgood described in class to adjust model's params.
+		Adjust model's learned weights based on Least Mean Squares cost.
 
-		batch - Set of states and score
+		Arguments:
+			batch : batch of (Board, score) training examples
+			n : learning rate
 		"""
+		
 		# iterate through batch
 		for i in batch:
 			board_state = i[0]
 			score = i[1]
-			x = board_state.target_representation() # List of representation values
+			x = board_state.target_representation(self.piece) # List of representation values
 
 			# Compute approximation
 			approximation = self.target_function(board_state)
 
 			# iterate through weights and rep values
-			for weight, rep_value in zip(self.weights, x):
+			for i in range(len(self.weights)):
+				self.weights[i] = self.weights[i] + n * (score - approximation) * x[i]
 
-				weight = weight + n * (score - approximation) * rep_value
-		pass
-
-	def make_move(board):
+	def make_move(self, board):
 		"""
 		Will decide where to move based upon the target function.
 
-		Possibly use minimax algorithm.
+		Returns:
+			board : returns a new Board object
 		"""
 
 		pass

@@ -4,6 +4,9 @@ The board which tac tac toe is played upon.
 
 import pprint
 
+# Number of features in target representation.
+NUM_FEATURES = 10
+
 class Board:
 	"""
 	The board which tac tac toe is played upon.
@@ -30,86 +33,42 @@ class Board:
 			'X' : indicates the 'X' player has won
 			'O' : indicates the 'O' player has won
 		"""
-		"""
-		row  = 3
-		column = 3
-		
-		Fill_Counter = 0
-		
-		for x in range(row):
-			for y in range(column):
-				if self.board[x][y] != "None":
-					Fill_Counter += 1
-				if Right_Check(insert parameters) == True or Down_Check(param) == True or Diagonal_Right(param) == True or Diagonal_Left(param) == True:
-					if Check_Symbol == 'X':
-						return 'X'
-					
-					if(Check_Symbol == 'O':
-						return 'O'
-				
-			if Fill_Counter == 9:
-				return True
-		
-		return False
-		"""
-		pass
-	
-	def Right_Check(self, x, y, row, col):
-		for i in range(3):
-			if x < 0 or x > row or y < 0 or y + i >= col:	
-				return False;
-			if self.board[x][y + i] != 'X' and self.board[x][y + i] != 'O':
-				return False
-			if self.board[x][y + i] == 'X':
-				return 'X'
-			if self.board[x][y + i] == 'O':
-				return 'O'
-		 return None
-	
-	def Down_Check(self, x, y, row, col):
-		for i in range(3):
-			if x + i < 0 or x + i >= row or y < 0 or y > col:	
-				return False;
-			if self.board[x + i][y] != 'X' and self.board[x][y + i] != 'O':
-			if self.board[x + i][y] == 'X':
-				return 'X'
-			if self.board[x + i][y] == 'O':
-				return 'O'
-			
-		 return None
-	
-	def Diagonal_Left(self, x, y, row, col):
-		for i in range(3):
-			if x + i < 0 or x + i >= row or y - i < 0 or y - i >= col:	
-				return False;
-			if self.board[x + i][y - i] != 'X' and self.board[x + i][y - i] != 'O':
-				if self.board[x + i][y - i] == 'X': 
-					return 'X'
-				if self.board[x + i][y - i] == 'O':
-					return 'O'
-		 return None
-	
-	def Diagonal_Right(self, x, y, row, col):
-		for i in range(3):
-			if x + i < 0 or x + i >= row or y + i < 0 or y + i >= col:	
-				return False;
-			if self.board[x + i][y + i] != 'X' and self.board[x + i][y + i] != 'O':
-			if self.board[x + i][y + i] == 'X': 
-				return 'X'
-			if self.board[x + i][y + i] == 'O':
-				return 'O'
-		 return None
-		
-	
-		
 
+		# Check rows.
+		for row in self.board:
+			s1, s2, s3 = row[0], row[1], row[2]
+			if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
+				return s1
+		
+		# Check columns.
+		board_transposed = map(list, zip(*self.board))
+		for row in board_transposed:
+			s1, s2, s3 = row[0], row[1], row[2]
+			if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
+				return s1
+
+		# Check diagonals.
+		s1, s2, s3 = self.board[0][0], self.board[1][1], self.board[2][2]
+		if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
+			return s1
+		s1, s2, s3 = self.board[0][2], self.board[1][1], self.board[2][0]
+		if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
+			return s1
+
+		# If reached this point, neither player has won.
+		board_flattened = sum(self.board, [])
+		if None in board_flattened:
+			return False
+		else:
+			return True
+		
 	@staticmethod
 	def number_of_features():
 		"""
 		Return the number of features in the target representation.
 		"""
 
-		return 10
+		return NUM_FEATURES
 
 	def target_representation(self, positive_board_piece):
 		"""
@@ -144,33 +103,8 @@ class Board:
 
 		return x
 
-def tests():
-
-	board = Board()
-
-	weights = [0, 1, 1, 1, 1, 10, 1, 1, 1, 1]
-	board.board = [
-		['X', 'X', 'O'],
-		['X', 'O', None],
-		[None, None, None]
-	]
-	print("Should value the middle piece highly: ")
-	print("Board: ")
-	pprint.pprint(board.board)
-	print("'X' score:", board.target_representation(weights, 'X'))
-	print("'O' score:", board.target_representation(weights, 'O'))
-
-	weights = [0, 10, 1, 10, 1, 1, 1, 10, 1, 10]
-	board.board = [
-		['X', 'O', 'X'],
-		['O', 'O', None],
-		[None, None, None]
-	]
-	print("Should value the corner pieces highly: ")
-	print("Board: ")
-	pprint.pprint(board.board)
-	print("'X' score:", board.target_representation(weights, 'X'))
-	print("'O' score:", board.target_representation(weights, 'O'))
+def main():
+	pass
 
 if __name__ == "__main__":
-	tests()
+	main()
