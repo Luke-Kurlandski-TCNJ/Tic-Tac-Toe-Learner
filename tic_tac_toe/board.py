@@ -4,6 +4,9 @@ The board which tac tac toe is played upon.
 
 import pprint
 
+# Number of features in target representation.
+NUM_FEATURES = 10
+
 class Board:
 	"""
 	The board which tac tac toe is played upon.
@@ -30,6 +33,7 @@ class Board:
 			'X' : indicates the 'X' player has won
 			'O' : indicates the 'O' player has won
 		"""
+<<<<<<< HEAD
 	
 		row  = 3
 		column = 3
@@ -113,15 +117,44 @@ class Board:
 		
 		
 
-		
+=======
 
+		# Check rows.
+		for row in self.board:
+			s1, s2, s3 = row[0], row[1], row[2]
+			if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
+				return s1
+		
+		# Check columns.
+		board_transposed = map(list, zip(*self.board))
+		for row in board_transposed:
+			s1, s2, s3 = row[0], row[1], row[2]
+			if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
+				return s1
+
+		# Check diagonals.
+		s1, s2, s3 = self.board[0][0], self.board[1][1], self.board[2][2]
+		if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
+			return s1
+		s1, s2, s3 = self.board[0][2], self.board[1][1], self.board[2][0]
+		if s1 == s2 and s1 == s3 and not None in [s1, s2, s3]:
+			return s1
+
+		# If reached this point, neither player has won.
+		board_flattened = sum(self.board, [])
+		if None in board_flattened:
+			return False
+		else:
+			return True
+>>>>>>> 9f8cc19ffc28e69411953648ac6ee4de9bbc6d87
+		
 	@staticmethod
 	def number_of_features():
 		"""
 		Return the number of features in the target representation.
 		"""
 
-		return 10
+		return NUM_FEATURES
 
 	def target_representation(self, positive_board_piece):
 		"""
@@ -156,6 +189,7 @@ class Board:
 
 		return x
 
+<<<<<<< HEAD
 def tests():
 
 	board = Board()
@@ -185,6 +219,10 @@ def tests():
 	print(board.game_over())
 	#print("'X' score:", board.target_representation(weights, 'X'))
 	#print("'O' score:", board.target_representation(weights, 'O'))
+=======
+def main():
+	pass
+>>>>>>> 9f8cc19ffc28e69411953648ac6ee4de9bbc6d87
 
 if __name__ == "__main__":
-	tests()
+	main()

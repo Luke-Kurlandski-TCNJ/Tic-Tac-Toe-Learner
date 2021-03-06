@@ -4,8 +4,8 @@ Serves as an "arena" for playing games between two models.
 
 from copy import deepcopy
 
-from board import Board
-from model import Model
+from tic_tac_toe.board import Board
+from tic_tac_toe.model import Model
 
 WIN_VALUE = 1
 LOSS_VALUE = -1
@@ -51,8 +51,13 @@ class GamePlayer:
 
 			# Add the learning model's data to the batch
 			game_status = board.game_over()
+			print("model_learner moves")
+			print("game_status", game_status)
 			if game_status is False:
-				batch.add((board_previous, board.target_function()))
+				batch.add(
+					(board_previous, 
+					self.model_learner.target_function(board_previous))
+				)
 			elif game_status is True:
 				batch.add((board_previous, TIE_VALUE))
 				learner_won = None
@@ -68,12 +73,13 @@ class GamePlayer:
 			else:
 				raise ValueError("board.game_over() bad return")
 			
-			# FIXME: is the non-learner not going to learn? Why would we
-				# do this? Anybody understand.
+			# FIXME: train model_learner on model_static's moves?
 
 			# Move the non-learner
 			board = self.model_static.make_move(board)
 			game_status = board.game_over()
+			print("model_static moves")
+			print("game_status", game_status)
 			if game_status is False:
 				pass
 			elif game_status is True:
@@ -87,14 +93,12 @@ class GamePlayer:
 				break
 			else:
 				raise ValueError("board.game_over() bad return")
-
+		
+		print("Game over. Perform gradient descent.")
 		# Adjust the learning model's parameter's
 		self.model_learner.gradient_decent(batch)
 
 		return learner_won
-
-def tests():
-	pass
 
 if __name__ == "__main__":
 	tests()
