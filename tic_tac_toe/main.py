@@ -45,8 +45,11 @@ def main():
 		if current_win_loss - previous_win_loss < THRESHOLD:
 			break
 	
-	with open('records.txt', 'w') as f:
-		f.write(records)
+	df = pd.DataFrame(
+		data=records, 
+		columns=["# Wins", "# Losses", "# Ties"]
+	)
+	df.to_csv('records.csv')
 
 if __name__ == "__main__":
 	main()
