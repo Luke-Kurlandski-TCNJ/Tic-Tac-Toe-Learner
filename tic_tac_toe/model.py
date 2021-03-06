@@ -86,4 +86,11 @@ class Model:
 			board : returns a new Board object
 		"""
 
-		pass
+		# FIXME: implement
+		return Board()
+
+def main():
+	pass
+
+if __name__ == "__main__":
+	main()

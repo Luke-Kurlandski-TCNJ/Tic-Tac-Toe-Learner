@@ -13,6 +13,8 @@ import sys
 
 from tic_tac_toe.board import Board
 from tic_tac_toe.model import Model
+from tic_tac_toe.game_player import GamePlayer
+from tic_tac_toe.main import main
 
 def generate_random_board():
 
@@ -177,7 +179,7 @@ class ModelTest(unittest.TestCase):
 		else:
 			assert True
 
-	def test_make_move():
+	def test_make_move(self):
 
 		board = Board()
 		board.board = [
@@ -188,6 +190,28 @@ class ModelTest(unittest.TestCase):
 
 		model = Model('X')
 		assert isinstance(model.make_move(board), Board)
+
+class GamePlayerTest(unittest.TestCase):
+
+	def test___init__(self):
+		
+		g = GamePlayer(Model('X'), Model('O'))
+
+		assert isinstance(g.model_learner, Model)
+		assert isinstance(g.model_static, Model)
+
+	def test_play_game(self):
+		
+		g = GamePlayer(Model('X'), Model('O'))
+
+		# FIXME: once make_move is implemented, we can test this.
+		assert False
+		#assert isinstance(g.play_game(), bool)
+
+class mainTest(unittest.TestCase):
+
+	def test_main(self):
+		main()
 
 if __name__ == '__main__':
 	unittest.main()
