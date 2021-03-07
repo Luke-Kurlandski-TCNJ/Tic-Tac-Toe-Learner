@@ -3,10 +3,9 @@ ML Model that plays tic tac toe.
 """
 
 from copy import deepcopy
-
 import random
 
-from tic_tac_toe.board import Board
+from board import Board
 
 class Model:
 	"""
@@ -29,8 +28,6 @@ class Model:
 		Initially assign random values to the model's weights.
 		"""
 
-
-
 		self.weights = [random.random() for i in range(Board.number_of_features())]
 
 	def initialize_optimal_weights(self):
@@ -39,7 +36,14 @@ class Model:
 		"""
 
 		# FIXME: once we determine which weights are good, implement
-		self.weights = [None] * Board.number_of_features()
+		self.weights = [0.13483930413923084, 
+						0.051254754148131854, 
+						15.513789042589472, 
+						1.28201144661653, 
+						0.7652200111647958, 
+						14.8635033752286, 
+						0.5173666678553399
+						]
 
 	def target_function(self, board):
 		"""
@@ -78,44 +82,43 @@ class Model:
 			for i in range(len(self.weights)):
 				self.weights[i] = self.weights[i] + n * (score - approximation) * x[i]
 
-	def make_move(self,board):
+	def make_move(self, board):
 		"""
 		Will decide where to move based upon the target function.
 
-		Possibly use minimax algorithm.
+		Arguments:
+			board : a Board object representing current board state
 
-		Major Issue: If player is worse if they make a move, this algo will fail 
-
-		Originally make multiple deep copies and then evaluate and then set board = deep copy but this didnt seem right 
+		Returns:
+			next_board : a board object representing the next best move
 		"""
 
-		scores_list= []
+		if None not in sum(board.board, []):
+			raise ValueError("Cannot make_move because game is over.")
 
-		#iterate through board and find scores of each possible move
-		for i in rows: 
-			for j in columns: 
-				if board.board[i][j] is not None:
-					#fill spot if available 
-					board.board[i][j] = 'X'
-					val = target_function(board)
-					# list of scores based on each move 
-					scores_list.append(val)
+		# list of ((row, col), score) tuples which tracks optimal move
+		scores = []
+		for i, row in enumerate(board.board):
+			for j, square in enumerate(row):
+				if square is None:
+					board.board[i][j] = self.piece
+					scores.append(((i, j), self.target_function(board)))
 					board.board[i][j] = None
-				else: 
-					val = target_function(board)
-					scores_list.append(val)
 
-		#Find Board with max value
-		max_score = max(scores_list)
-		best_choice = scores_list.index(max_score)
+		# Get best move, and return a deepcopy of the board
+		row, col = max(scores, key = lambda i : i[1])[0]
+		#print(row, col)
+		next_board = Board()
+		next_board.board = deepcopy(board.board)
+		next_board.board[row][col] = self.piece
+		return next_board
 
-		#in place of making multiple deep copies just find list score with max value
-		row_index = best_choice/3
-		col_index = best_choice%3
+def main():
+	print("Do Nothing.")
 
-		#returns board index with X for best move
-		board.board[row_index][col_index] = 'X'
+if __name__ == "__main__":
+	main()
 
-		return board 
+		
 
 

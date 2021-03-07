@@ -2,8 +2,10 @@
 The program that runs the tic taco toe learning procedure.
 """
 
-from tic_tac_toe.model import Model
-from tic_tac_toe.game_player import GamePlayer
+import csv
+
+from model import Model
+from game_player import GamePlayer
 
 def main():
 
@@ -11,12 +13,13 @@ def main():
 	GAMES_PER_CYCLE = 100
 
 	# Checks if performance has stabalizes once per cycle
-	THRESHOLD = .1
+	THRESHOLD = -1
+	MAX_GAMES = 100000
 
 	# list of tuples such that the i'th element of record contains
 		# (num games won, num games lost, num games tied) after playing
 		# i games
-	records = []
+	records = [(0,0,0)]
 
 	model_learner = Model('X')
 	model_static = Model('O')
@@ -39,17 +42,27 @@ def main():
 				print("ERROR")
 			records.append(next_record)
 
+		print("Played", len(records), "games, record", records[-1])
+
 		# If the model has not improved above threshold, stop learning
-		current_win_loss = records[-1][0] / records[-1][2]
-		previous_win_loss = records[-1 * GAMES_PER_CYCLE][0] / records[-1 * GAMES_PER_CYCLE][2]
-		if current_win_loss - previous_win_loss < THRESHOLD:
+		try:
+			current_win_loss = records[-1][0] / records[-1][1]
+			previous_win_loss = records[-1 * GAMES_PER_CYCLE][0] / records[-1 * GAMES_PER_CYCLE][1]
+			if current_win_loss - previous_win_loss < THRESHOLD:
+				break
+		except ZeroDivisionError:
+			print("Ignoring a ZeroDivisionError due to undefeated model")
+
+		# Temp
+		if len(records) > MAX_GAMES:
 			break
 	
-
-
-	with open('records.txt', 'w') as f:
-		f.write("# Wins, # Losses, # Ties")
-		f.write(records) 
+	# Write records to csv file
+	with open('records.csv','w') as out:
+		csv_out = csv.writer(out)
+		csv_out.writerow(['# Wins','# Losses', '# Ties'])
+		for row in records:
+			csv_out.writerow(row)
 
 if __name__ == "__main__":
 	main()

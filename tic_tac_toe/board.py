@@ -5,7 +5,7 @@ The board which tac tac toe is played upon.
 import pprint
 
 # Number of features in target representation.
-NUM_FEATURES = 10
+NUM_FEATURES = 7
 
 class Board:
 	"""
@@ -34,8 +34,6 @@ class Board:
 			'O' : indicates the 'O' player has won
 		"""
 
-			
-
 		row  = 3
 		column = 3
 		
@@ -52,9 +50,6 @@ class Board:
 			if Fill_Counter == 9:
 				return True
 		return False
-		
-		
-		#pass
 	
 	def Right_Check(self, x):
 		x_count = 0
@@ -113,10 +108,6 @@ class Board:
 					return 'O'
 		return False
 		
-		
-
-
-		
 	@staticmethod
 	def number_of_features():
 		"""
@@ -126,6 +117,50 @@ class Board:
 		return NUM_FEATURES
 
 	def target_representation(self, positive_board_piece):
+		"""
+
+		Notes:
+			x_0 = 1
+			x_1 = # my pieces in corners
+			x_2 = # my opponent pieces in corners
+			x_3 = # my pieces in center
+			x_4 = # my opponent pieces in center
+			x_5 = # my pieces in side-center
+			x_6 = # my opponent pieces in side-center
+		"""
+
+		corners = [self.board[0][0], self.board[0][2], self.board[2][0], self.board[2][2]]
+		center = self.board[1][1]
+		side_center = [self.board[0][1], self.board[1][0], self.board[2][1], self.board[1][2]]
+
+		x_0, x_1, x_2, x_3, x_4, x_5, x_6 = 0, 0, 0, 0, 0, 0, 0
+
+		for p in corners:
+			if p == positive_board_piece:
+				x_1 += 1
+			elif p is None:
+				pass
+			else:
+				x_2 += 1
+
+		if center == positive_board_piece:
+			x_3 += 1
+		elif center is None:
+			pass
+		else:
+			x_4 += 1
+
+		for p in side_center:
+			if p == positive_board_piece:
+				x_5 += 1
+			elif p is None:
+				pass
+			else:
+				x_6 += 1
+
+		return [x_0, x_1, x_2, x_3, x_4, x_5, x_6]
+
+	def target_representation_2(self, positive_board_piece):
 		"""
 		Return the features, x_0, x_1,...x_10 for the current board.
 
@@ -158,9 +193,19 @@ class Board:
 
 		return x
 
+	def print(self):
+		"""
+		Helper method to print the board in a nice manner.
+		"""
+
+		if False:
+			for x in self.board:
+				print(*x, sep=' ')
+			print()
 
 def main():
-  pass
+	print("Do Nothing.")
+
 if __name__ == "__main__":
 	main()
   
