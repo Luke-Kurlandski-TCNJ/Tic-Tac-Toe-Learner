@@ -49,7 +49,7 @@ def main():
 			records.append(next_record)
 	
 	# Write records to csv file
-	with open('../experiments/records1.csv','w') as out:
+	with open('../experiments/records2.csv','w') as out:
 		csv_out = csv.writer(out)
 		csv_out.writerow(['# Wins','# Losses', '# Ties'])
 		for row in records:
