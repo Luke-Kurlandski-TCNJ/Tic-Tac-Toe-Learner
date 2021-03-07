@@ -30,20 +30,13 @@ class Model:
 
 		self.weights = [random.random() for i in range(Board.number_of_features())]
 
-	def initialize_optimal_weights(self):
+	def initialize_weights(self, weights):
 		"""
 		Assign weights according to the optimally learned weights.
 		"""
 
 		# FIXME: once we determine which weights are good, implement
-		self.weights = [0.13483930413923084, 
-						0.051254754148131854, 
-						15.513789042589472, 
-						1.28201144661653, 
-						0.7652200111647958, 
-						14.8635033752286, 
-						0.5173666678553399
-						]
+		self.weights = weights
 
 	def target_function(self, board):
 		"""
@@ -82,12 +75,14 @@ class Model:
 			for i in range(len(self.weights)):
 				self.weights[i] = self.weights[i] + n * (score - approximation) * x[i]
 
-	def make_move(self, board):
+	def make_move(self, board, randomize=False):
 		"""
 		Will decide where to move based upon the target function.
 
 		Arguments:
 			board : a Board object representing current board state
+			randomize : if True, model will sometimes choose non-optimal
+				move
 
 		Returns:
 			next_board : a board object representing the next best move
@@ -105,9 +100,16 @@ class Model:
 					scores.append(((i, j), self.target_function(board)))
 					board.board[i][j] = None
 
+		# If randomize flag is set, sometimes make a random move
+		if randomize:
+			if random.choice([True, False]):	# choose random move
+				row, col = random.randint(0, 2), random.randint(0, 2)
+			else:								# choose optimal move
+				row, col = max(scores, key = lambda i : i[1])[0]
 		# Get best move, and return a deepcopy of the board
-		row, col = max(scores, key = lambda i : i[1])[0]
-		#print(row, col)
+		else:
+			row, col = max(scores, key = lambda i : i[1])[0]
+		
 		next_board = Board()
 		next_board.board = deepcopy(board.board)
 		next_board.board[row][col] = self.piece

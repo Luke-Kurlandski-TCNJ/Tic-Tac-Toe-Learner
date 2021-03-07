@@ -12,9 +12,8 @@ def main():
 	# number games to play per cycle
 	GAMES_PER_CYCLE = 100
 
-	# Checks if performance has stabalizes once per cycle
-	THRESHOLD = -1
-	MAX_GAMES = 100000
+	# Number of games to play
+	MAX_GAMES = 1000
 
 	# list of tuples such that the i'th element of record contains
 		# (num games won, num games lost, num games tied) after playing
@@ -23,6 +22,8 @@ def main():
 
 	model_learner = Model('X')
 	model_static = Model('O')
+
+	model_static.initialize_weights([.5, .7, .3, .7, .3, .7, .3])
 
 	game = GamePlayer(model_learner, model_static)
 
@@ -42,23 +43,14 @@ def main():
 				print("ERROR")
 			records.append(next_record)
 
-		print("Played", len(records), "games, record", records[-1])
-
-		# If the model has not improved above threshold, stop learning
-		try:
-			current_win_loss = records[-1][0] / records[-1][1]
-			previous_win_loss = records[-1 * GAMES_PER_CYCLE][0] / records[-1 * GAMES_PER_CYCLE][1]
-			if current_win_loss - previous_win_loss < THRESHOLD:
-				break
-		except ZeroDivisionError:
-			print("Ignoring a ZeroDivisionError due to undefeated model")
+		#print("Played", len(records), "games, record", records[-1])
 
 		# Temp
 		if len(records) > MAX_GAMES:
 			break
 	
 	# Write records to csv file
-	with open('records.csv','w') as out:
+	with open(str(MAX_GAMES) + '_records.csv','w') as out:
 		csv_out = csv.writer(out)
 		csv_out.writerow(['# Wins','# Losses', '# Ties'])
 		for row in records:

@@ -122,18 +122,18 @@ class Board:
 		Notes:
 			x_0 = 1
 			x_1 = # my pieces in corners
-			x_2 = # my opponent pieces in corners
+			x_2 = # opponent pieces in corners
 			x_3 = # my pieces in center
-			x_4 = # my opponent pieces in center
+			x_4 = # opponent pieces in center
 			x_5 = # my pieces in side-center
-			x_6 = # my opponent pieces in side-center
+			x_6 = # opponent pieces in side-center
 		"""
 
 		corners = [self.board[0][0], self.board[0][2], self.board[2][0], self.board[2][2]]
 		center = self.board[1][1]
 		side_center = [self.board[0][1], self.board[1][0], self.board[2][1], self.board[1][2]]
 
-		x_0, x_1, x_2, x_3, x_4, x_5, x_6 = 0, 0, 0, 0, 0, 0, 0
+		x_0, x_1, x_2, x_3, x_4, x_5, x_6 = 1, 0, 0, 0, 0, 0, 0
 
 		for p in corners:
 			if p == positive_board_piece:
