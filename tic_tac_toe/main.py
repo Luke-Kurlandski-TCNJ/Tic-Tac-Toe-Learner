@@ -13,7 +13,7 @@ def main():
 	GAMES_PER_CYCLE = 100
 
 	# Number of games to play
-	MAX_GAMES = 1000
+	MAX_GAMES = 10000
 
 	# list of tuples such that the i'th element of record contains
 		# (num games won, num games lost, num games tied) after playing
@@ -23,12 +23,16 @@ def main():
 	model_learner = Model('X')
 	model_static = Model('O')
 	
-	# [bias term, my corners, opp corners, my center center, opp center center, my side-center, opp side-center]
-	model_static.initialize_weights([.5, .8, .2, .4, .6, .6, .4])
+	# [bias term, 
+		# my corners, opp corners, 
+		# my center center, opp center center, 
+		# my side-center, opp side-center
+	# ]
+	model_static.initialize_weights([0, .75, -.75, -.25, .25, .5, -.5])
 
 	game = GamePlayer(model_learner, model_static)
 
-	while True:
+	while len(records) < MAX_GAMES:
 
 		# Play games and tack wins, loss, ties
 		for i in range(GAMES_PER_CYCLE):
@@ -43,15 +47,9 @@ def main():
 			else:
 				print("ERROR")
 			records.append(next_record)
-
-		#print("Played", len(records), "games, record", records[-1])
-
-		# Temp
-		if len(records) > MAX_GAMES:
-			break
 	
 	# Write records to csv file
-	with open(str(MAX_GAMES) + '_records.csv','w') as out:
+	with open('../experiments/records1.csv','w') as out:
 		csv_out = csv.writer(out)
 		csv_out.writerow(['# Wins','# Losses', '# Ties'])
 		for row in records:

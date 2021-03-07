@@ -9,6 +9,8 @@ import random
 from board import Board
 from model import Model
 
+# Value to assign a training examples in scenario when a board leads 
+	# to a win, loss, or tie
 WIN_VALUE = 100
 LOSS_VALUE = -100
 TIE_VALUE = 0
@@ -23,8 +25,8 @@ class GamePlayer:
 		Handle playing multiple games between two models.
 
 		Arguments:
-			model_learner : the learning model
-			model_static : the non-learning model
+			model_learner : Model : the learning model
+			model_static : Model : the non-learning model
 		"""
 
 		self.model_learner = model_learner
@@ -34,9 +36,9 @@ class GamePlayer:
 		"""
 		Play a single game between the two models.
 
-		Return 
-			learner_won : True if the learner wins, False if he loses,
-				and None if there is a tie.
+		Returns:
+			learner_won : bool or None : True if the learner wins, 
+				False if he loses, and None if there is a tie.
 		"""
 
 		# Set up the game
@@ -66,7 +68,7 @@ class GamePlayer:
 				batch.add((board, TIE_VALUE))
 				learner_won = None
 				break
-			elif game_status == self.model_learner.piece:	# Won game
+			elif game_status == self.model_learner.piece: # Won game
 				batch.add((board, WIN_VALUE))
 				learner_won = True
 				break

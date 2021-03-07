@@ -32,10 +32,12 @@ class Model:
 
 	def initialize_weights(self, weights):
 		"""
-		Assign weights according to the optimally learned weights.
+		Assign weights.
+
+		Arguments:
+			weights : list : weights to use for this model
 		"""
 
-		# FIXME: once we determine which weights are good, implement
 		self.weights = weights
 
 	def target_function(self, board):
@@ -43,10 +45,10 @@ class Model:
 		Return the value of a board according to target representation.
 
 		Arguments:
-			board : the board to compute a score for
+			board : Board : the board to compute a score for
 
 		Returns:
-			value : the value for the board state
+			value : float : the value for the board state
 		"""
 
 		x = board.target_representation(self.piece)
@@ -58,20 +60,22 @@ class Model:
 		Adjust model's learned weights based on Least Mean Squares cost.
 
 		Arguments:
-			batch : batch of (Board, score) training examples
-			n : learning rate
+			batch : iterable : batch of (Board, score) training examples
+			n : float : learning rate
 		"""
 		
-		# iterate through batch
+		# Iterate through batch
 		for i in batch:
 			board_state = i[0]
 			score = i[1]
-			x = board_state.target_representation(self.piece) # List of representation values
+
+			# List of feature values
+			x = board_state.target_representation(self.piece)
 
 			# Compute approximation
 			approximation = self.target_function(board_state)
 
-			# iterate through weights and rep values
+			# Adjust weights based upon error
 			for i in range(len(self.weights)):
 				self.weights[i] = self.weights[i] + n * (score - approximation) * x[i]
 
@@ -80,12 +84,13 @@ class Model:
 		Will decide where to move based upon the target function.
 
 		Arguments:
-			board : a Board object representing current board state
-			randomize : if True, model will sometimes choose non-optimal
-				move
+			board : Board : a Board object representing current board
+			randomize : bool : if True, model will make a random move
+				50% of the time
 
 		Returns:
-			next_board : a board object representing the next best move
+			next_board : Board :a board object representing the next 
+				best move
 		"""
 
 		if None not in sum(board.board, []):
@@ -102,14 +107,14 @@ class Model:
 
 		# If randomize flag is set, sometimes make a random move
 		if randomize:
-			if random.choice([True, False]):	# choose random move
+			if random.choice([True, False]):	
 				row, col = random.randint(0, 2), random.randint(0, 2)
-			else:								# choose optimal move
+			else:								
 				row, col = max(scores, key = lambda i : i[1])[0]
-		# Get best move, and return a deepcopy of the board
 		else:
 			row, col = max(scores, key = lambda i : i[1])[0]
 		
+		# Get best move, and return a deepcopy of the board
 		next_board = Board()
 		next_board.board = deepcopy(board.board)
 		next_board.board[row][col] = self.piece
