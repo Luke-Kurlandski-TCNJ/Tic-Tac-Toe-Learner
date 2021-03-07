@@ -3,9 +3,25 @@ The program that runs the tic taco toe learning procedure.
 """
 
 import csv
+import matplotlib.pyplot as plt
+import pandas as pd
 
 from model import Model
 from game_player import GamePlayer
+
+def generate_graphs(records_csv):
+	'''
+	
+	'''
+	df = pd.read_csv(records_csv)
+	
+	plot = df.plot(title='Tic-Tac-Toe Model Performence',
+				   ylabel='Percentage Games Won',
+				   xlabel='Games Played', 
+				   y='# Wins')
+
+	plot.figure.savefig('%_games_won.pdf')
+
 
 def main():
 
@@ -56,6 +72,9 @@ def main():
 		csv_out.writerow(['# Wins','# Losses', '# Ties'])
 		for row in records:
 			csv_out.writerow(row)
+
+	# Creates graph of performence
+	generate_graphs('1000_records.csv')
 
 if __name__ == "__main__":
 	main()
