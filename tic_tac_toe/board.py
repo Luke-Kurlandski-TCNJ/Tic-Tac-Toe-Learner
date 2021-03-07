@@ -52,6 +52,8 @@ class Board:
 		return False
 	
 	def Right_Check(self, x):
+		"""Associated with game_over."""
+		
 		x_count = 0
 		o_count = 0
 		for i in range(3):
@@ -66,6 +68,8 @@ class Board:
 		return False
 	
 	def Down_Check(self, y):
+		"""Associated with game_over."""
+
 		x_count = 0
 		o_count = 0
 		for i in range(3):
@@ -80,6 +84,8 @@ class Board:
 		return False
 
 	def Diagonal_Left(self, x, y):
+		"""Associated with game_over."""
+
 		x_count = 0
 		o_count = 0
 		for i in range(3):
@@ -95,6 +101,8 @@ class Board:
 		return False
 	
 	def Diagonal_Right(self, x, y):
+		"""Associated with game_over."""
+
 		x_count = 0
 		o_count = 0
 		for i in range(3):
@@ -112,12 +120,17 @@ class Board:
 	def number_of_features():
 		"""
 		Return the number of features in the target representation.
+
+		Returns:
+			NUM_FEATURES : int : number of features in current target
+				representation
 		"""
 
 		return NUM_FEATURES
 
 	def target_representation(self, positive_board_piece):
 		"""
+		Return the features, x_0, x_1, ..., x_6 for the current board.
 
 		Notes:
 			x_0 = 1
@@ -127,6 +140,13 @@ class Board:
 			x_4 = # opponent pieces in center
 			x_5 = # my pieces in side-center
 			x_6 = # opponent pieces in side-center
+
+		Arguments:
+			positive_board_piece : str : the piece that a player moves 
+				with, either 'X', or 'O'
+
+		Returns:
+			list : feature representation of a board
 		"""
 
 		corners = [self.board[0][0], self.board[0][2], self.board[2][0], self.board[2][2]]
@@ -164,6 +184,8 @@ class Board:
 		"""
 		Return the features, x_0, x_1,...x_10 for the current board.
 
+		This representation is not in current use.
+
 		Notes: the representation assigns a numerical value to each of
 			the nine squares. The value is x_i = 1 if the player has a
 			piece in square i, x_i = 0 if square i is empty, and 
@@ -173,11 +195,11 @@ class Board:
 			right.
 
 		Arguments:
-			positive_board_piece : the piece that a player moves with,
-				either 'X', or 'O'
+			positive_board_piece : str : the piece that a player moves 
+				with, either 'X', or 'O'
 
 		Returns:
-			list of feature values
+			list : feature representation of a board
 		"""
 
 		x = []
@@ -198,10 +220,9 @@ class Board:
 		Helper method to print the board in a nice manner.
 		"""
 
-		if False:
-			for x in self.board:
-				print(*x, sep=' ')
-			print()
+		for x in self.board:
+			print(*x, sep=' ')
+		print()
 
 def main():
 	print("Do Nothing.")
