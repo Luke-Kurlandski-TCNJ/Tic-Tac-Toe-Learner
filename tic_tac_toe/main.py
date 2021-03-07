@@ -22,8 +22,9 @@ def main():
 
 	model_learner = Model('X')
 	model_static = Model('O')
-
-	model_static.initialize_weights([.5, .7, .3, .7, .3, .7, .3])
+	
+	# [bias term, my corners, opp corners, my center center, opp center center, my side-center, opp side-center]
+	model_static.initialize_weights([.5, .8, .2, .4, .6, .6, .4])
 
 	game = GamePlayer(model_learner, model_static)
 
