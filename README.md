@@ -6,4 +6,6 @@ Run this program as follows:
 
 > python3 main.py
 
+Version of python should be 3.6.8 for guarenteed success
+
 It should be noted that we have misnamed that learned function in the program. We have called it the target_function. This method should really be called learned_function(), or V^.
