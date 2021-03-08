@@ -10,18 +10,35 @@ from model import Model
 from game_player import GamePlayer
 
 def generate_graphs(records_csv):
-	'''
-	
-	'''
+	# Takes wins, loesses, and ties in CSV format
 	df = pd.read_csv(records_csv)
+
+	# Creates % Won column
+	df["% Won"] =  df['# Wins'] / (df['# Losses'] + df['# Ties'] + df['# Wins'])
 	
-	plot = df.plot(title='Tic-Tac-Toe Model Performence',
-				   ylabel='Percentage Games Won',
-				   xlabel='Games Played', 
-				   y='# Wins')
+	# Creates % Won plot
+	win_plot = df.plot(title='Tic-Tac-Toe Model % Win', y='% Won')
+	win_plot.set_xlabel('# of Games Played')
+	win_plot.set_ylabel('% of Games Won')
+	win_plot.figure.savefig('%_games_won.pdf')
 
-	plot.figure.savefig('%_games_won.pdf')
+	# Creates % Loss column
+	df["% Loss"] =  df['# Losses'] / (df['# Losses'] + df['# Ties'] + df['# Wins'])
 
+	# Creates % Loss plot
+	loss_plot = df.plot(title='Tic-Tac-Toe Model % Loss', y='% Loss')
+	loss_plot.set_xlabel('# of Games Played')
+	loss_plot.set_ylabel('% of Games Loss')
+	loss_plot.figure.savefig('%_games_loss.pdf')
+
+	# Creates % Tie column
+	df["% Tie"] =  df['# Ties'] / (df['# Losses'] + df['# Ties'] + df['# Wins'])
+
+	# Creates % Tie plot
+	tie_plot = df.plot(title='Tic-Tac-Toe Model % Tie', y='% Tie')
+	tie_plot.set_xlabel('# Games Played')
+	tie_plot.set_ylabel('% of Games Tied')
+	tie_plot.figure.savefig('%_games_tie.pdf')
 
 def main():
 
@@ -74,7 +91,7 @@ def main():
 			csv_out.writerow(row)
 
 	# Creates graph of performence
-	generate_graphs('1000_records.csv')
+	generate_graphs(str(MAX_GAMES) + '_records.csv')
 
 if __name__ == "__main__":
 	main()
